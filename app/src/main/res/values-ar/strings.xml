@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">شجرتي</string>
+    <string name="Readytofocus">"جاهز للتركيز؟ "</string>
+    <string name="Yourtreeiswaitingtogrow">شجرتك تنتظر النمو</string>
+    <string name="GiveUp">إستسلام؟</string>
+    <string name="PlanetyourTreenow">"إزرع شجرتك الان "</string>
+    <string name="YourtreeisgrowingKeepgoing">"شجرتك تنمو,استمر يا بطل "</string>
+    <string name="MyForest">غابتى 🌳</string>
+    <string name="sessionscompletedkeepgoing">"15 جلسة مكتملة حتى الان , استمر "</string>
+    <string name="TreesGrown">الأشجار المزروعة</string>
+    <string name="WitheredTrees">الأشجار الذابلة</string>
+    <string name="Focus">ركز</string>
+    <string name="timer">المؤقت</string>
+    <string name="yourTrees">أشجارك</string>
+    <string name="myForest">غابتى</string>
+</resources>
