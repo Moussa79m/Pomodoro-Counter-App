@@ -1,37 +1,90 @@
-package com.example.pomodorowatch.ViewModel
 
+
+import android.content.Context
+import android.content.Intent
+import android.os.Build
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.pomodorowatch.Data.LocalStorage.TreeSession
+import com.example.pomodorowatch.Repositories.TreeSessionsRepo
+import com.example.pomodorowatch.Service.TimerManager
+import com.example.pomodorowatch.Service.TimerService
+import com.example.pomodorowatch.Service.TimerState
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.milliseconds
 
-class TimerViewModel: ViewModel() {
-     val time =25
-  private val Pomodoro_Time_Seconds=time*60
-  private val _timeLeft= MutableStateFlow(Pomodoro_Time_Seconds)
+class TimerViewModel(private val repo: TreeSessionsRepo): ViewModel() {
+    private val defaultTimeInSeconds = 25 * 60
+  private val _timeLeft= MutableStateFlow(defaultTimeInSeconds)
     val timeLeft=_timeLeft.asStateFlow()
   private val _isTimerRunning= MutableStateFlow(false)
     val isTimerRunning=_isTimerRunning.asStateFlow()
   private val _treeStage= MutableStateFlow(1)
     val treeStage =_treeStage.asStateFlow()
+    private val _totalTime= MutableStateFlow(defaultTimeInSeconds)
+    val totalTime=_totalTime.asStateFlow()
+    // ==========================================
+    // 2. تمرير الإحصائيات من الـ Repository عشان الشاشات التانية تقرأها
+    // ==========================================
+    val allSessions =repo.allSessions.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000L),
+        initialValue = emptyList()
+    )
+    val successfulTreesCount=repo.successfulTreeCount.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000L),
+        initialValue = 0
+    )
+    val witheredTreeCount=repo.witheredTreesCount.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000L),
+        initialValue = 0
+    )
+    val totalFocusMinutes=repo.totalFocusMinutes.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000L),
+        initialValue = 0
+    )
+    val totalMinutes=repo.totalMinutes.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000L),
+        initialValue = 0
+    )
 
     private var timerJob : Job? =null
+
+    fun setCustomTime(minutes : Int) {
+        if(!_isTimerRunning.value){
+            val timeInSeconds=minutes*60
+            _totalTime.value=timeInSeconds
+            _timeLeft.value=timeInSeconds
+            _treeStage.value=1
+        }
+    }
 
     fun startTimer(){
         if(_isTimerRunning.value)
             return
+        if(_timeLeft.value==0){
+           _timeLeft.value=_totalTime.value
+           _treeStage.value=1
+        }
         _isTimerRunning.value=true
     timerJob=viewModelScope.launch {
         while (_isTimerRunning.value&&_timeLeft.value>0) {
-            delay(1000L)
+            delay(1000L.milliseconds)
             _timeLeft.value -= 1
             updateTreeStage()
         }
-        if(_timeLeft.value==0)
+        if(_timeLeft.value==0&& _isTimerRunning.value)
             finishTimerSuccessfuly()
     }
 
@@ -40,27 +93,117 @@ class TimerViewModel: ViewModel() {
     fun StopTimerEarly() {
         timerJob?.cancel()
         _isTimerRunning.value=false
-        _timeLeft.value=Pomodoro_Time_Seconds
+        val timePassed=_totalTime.value-_timeLeft.value
+        if (timePassed>60){
+            saveSessions(false, finalStage = _treeStage.value)
+        }
+        _timeLeft.value=_totalTime.value
         _treeStage.value=1
     }
      fun finishTimerSuccessfuly() {
         _isTimerRunning.value=false
-        _timeLeft.value=Pomodoro_Time_Seconds
+        _timeLeft.value=_totalTime.value
         _treeStage.value=4
+         saveSessions(true, finalStage = 4)
+
     }
 
      fun updateTreeStage() {
-        val timePassed = Pomodoro_Time_Seconds - _timeLeft.value
+        val timePassed = _totalTime.value - _timeLeft.value
         _treeStage.value = when {
-            timePassed < Pomodoro_Time_Seconds / 4->1
-            timePassed < Pomodoro_Time_Seconds / 2->2
-            timePassed < (Pomodoro_Time_Seconds * 3)/4->3
+            timePassed < _totalTime.value / 4->1
+            timePassed < _totalTime.value / 2->2
+            timePassed < (_totalTime.value * 3)/4->3
             else->4
 
-        } as Int
-
-
+        } as Int }
+    fun saveSessions(isSuccessful: Boolean,finalStage: Int){
+        viewModelScope.launch {
+            val session = TreeSession(
+                durationInMinutes = _totalTime.value /60,
+                isSuccessful = isSuccessful,
+                treeString = finalStage,
+                timeStamp = System.currentTimeMillis()
+                )
+            repo.insertSession(session)
+        }
+    }
+    fun pauseTimer(){
+        timerJob?.cancel()
+        _isTimerRunning.value=false
     }
 
-
 }
+
+//class TimerViewModel(private val repo: TreeSessionsRepo): ViewModel(){
+//    // =========================================================
+//    // الجزء الأول: متغيرات الداتابيز (اللي بتعرض الإحصائيات في الشاشة)
+//    // =========================================================
+//    val allSessions = repo.allSessions.stateIn(
+//        scope = viewModelScope,
+//        started = SharingStarted.WhileSubscribed(5000L),
+//        initialValue = emptyList()
+//    )
+//
+//    val successfulTreesCount = repo.successfulTreeCount.stateIn(
+//        scope = viewModelScope,
+//        started = SharingStarted.WhileSubscribed(5000L),
+//        initialValue = 0
+//    )
+//
+//    val witheredTreeCount = repo.witheredTreesCount.stateIn(
+//        scope = viewModelScope,
+//        started = SharingStarted.WhileSubscribed(5000L),
+//        initialValue = 0
+//    )
+//
+//    val totalFocusMinutes = repo.totalFocusMinutes.stateIn(
+//        scope = viewModelScope,
+//        started = SharingStarted.WhileSubscribed(5000L),
+//        initialValue = 0
+//    )
+//
+//    val totalMinutes = repo.totalMinutes.stateIn(
+//        scope = viewModelScope,
+//        started = SharingStarted.WhileSubscribed(5000L),
+//        initialValue = 0
+//    )
+//    val timeRemining= TimerManager.timerRemaining.asStateFlow()
+//    val timerState=TimerManager.timerState.asStateFlow()
+//    val totalTime= TimerManager.totalTime.asStateFlow()
+//
+//    private val _treeStage= MutableStateFlow(1)
+//        val treeStage =_treeStage.asStateFlow()
+//    fun startTimerService(context: Context,minutes: Int){
+//        val intent= Intent(context, TimerService::class.java).apply {
+//            action="START"
+//            putExtra("MINUTES",minutes)
+//        }
+//        if (Build.VERSION.SDK_INT>= Build.VERSION_CODES.O){
+//            context.startForegroundService(intent)
+//        }else{
+//            context.startService(intent)
+//        }
+//    }
+//
+//    fun cancelTimerService(context: Context){
+//        val intent= Intent(context, TimerService::class.java).apply {
+//            action="CANCEL"
+//        }
+//        context.startService(intent)
+//
+//    }
+//    fun pauseTimerService(context: Context){
+//        val intent= Intent(context, TimerService::class.java).apply {
+//            action="PAUSE"
+//        }
+//        context.startService(intent)
+//    }
+//
+//    // الدالة دي اللي نسيناها عشان تحديث الوقت من البكرة
+//    fun setCustomTime(minutes: Int) {
+//        val seconds = minutes * 60L
+//        TimerManager.totalTime.value = seconds
+//        TimerManager.timerRemaining.value = seconds
+//    }
+//}

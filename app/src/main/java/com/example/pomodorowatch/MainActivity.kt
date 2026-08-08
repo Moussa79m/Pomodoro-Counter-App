@@ -1,5 +1,6 @@
 package com.example.pomodorowatch
 
+import TimerViewModel
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -17,7 +18,9 @@ import androidx.compose.material3.TopAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.pomodorowatch.ViewModel.TimerViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.pomodorowatch.Data.LocalStorage.TreeDatabase
+import com.example.pomodorowatch.Repositories.TreeSessionsRepo
 import com.example.pomodorowatch.ui.theme.PomodoroWatchTheme
 import com.example.pomodorowatch.ui.theme.Screens.Mainscreen
 import kotlin.getValue
@@ -26,12 +29,18 @@ class MainActivity : ComponentActivity() {
     private val timerViewMiodel: TimerViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val database= TreeDatabase.getDatabase(this)
+        val repos= TreeSessionsRepo(database.treeSessionDao())
+        val factory= TimerViewModelFactory(repos)
+
         enableEdgeToEdge()
         setContent {
+
             PomodoroWatchTheme{
                 Surface(modifier = Modifier.fillMaxSize(),
                     color=MaterialTheme.colorScheme.background ) {
-                    Mainscreen(viewModel = timerViewMiodel)
+                    Mainscreen(viewModel = viewModel(factory=factory))
                 }
             }
         }

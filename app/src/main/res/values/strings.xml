@@ -6,11 +6,11 @@
     <string name="PlanetyourTreenow">Planet your Tree now</string>
     <string name="YourtreeisgrowingKeepgoing">Your tree is growing, Keep going</string>
     <string name="MyForest">My Forest 🌳</string>
-    <string name="sessionscompletedkeepgoing">15 sessions completed,keep going!</string>
+    <string name="sessionscompletedkeepgoing"> sessions completed,keep going!</string>
     <string name="TreesGrown">Trees Grown</string>
     <string name="WitheredTrees">Withered Trees</string>
     <string name="Focus">Focus</string>
     <string name="timer">Timer</string>
-    <string name="yourTrees">your Trees</string>
+    <string name="yourTrees">Your Trees</string>
     <string name="myForest">"My Forest "</string>
 </resources>
