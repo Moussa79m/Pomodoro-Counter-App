@@ -7,11 +7,10 @@
 
 
 <p align="left">
-<img width="50%" height="50%" alt="Screenshot 2026-08-11 154345" src="https://github.com/user-attachments/assets/38065da9-09ee-402d-aa82-6e3dfacd70f4" />
-<img width="50%" height="50%" alt="Screenshot 2026-08-11 154333" src="https://github.com/user-attachments/assets/13ad09c2-0dfd-4f69-a889-c17924325c48" />
-<img width="50%" height="50%" alt="Screenshot 2026-08-11 154324" src="https://github.com/user-attachments/assets/4da11689-1cb9-497f-b768-7deebca306ff" />
-<img width="50%" height="50%" alt="Screenshot 2026-08-11 154356" src="https://github.com/user-attachments/assets/bede77d9-c836-439d-831f-581d3dc4871e" />
-
+<img width="381" height="802" alt="Screenshot 2026-08-11 154345" src="https://github.com/user-attachments/assets/c10a58cd-23a4-43fd-8e6f-f7585e402a98" />
+<img width="374" height="799" alt="Screenshot 2026-08-11 154333" src="https://github.com/user-attachments/assets/d7ea4cac-ce93-4210-85fd-e36255af450e" />
+<img width="388" height="804" alt="Screenshot 2026-08-11 154324" src="https://github.com/user-attachments/assets/425de887-fb74-4b70-8039-fa6a3fd4dfeb" />
+<img width="377" height="796" alt="Screenshot 2026-08-11 154356" src="https://github.com/user-attachments/assets/7b6b8094-237f-4adc-baeb-f4147b1f4dcd" />
 </p>
 
 ## 📖 About PomoTree
