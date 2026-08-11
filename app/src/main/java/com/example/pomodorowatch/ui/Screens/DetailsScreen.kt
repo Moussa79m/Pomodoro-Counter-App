@@ -1,10 +1,7 @@
-package com.example.pomodorowatch.ui.theme.Screens
+package com.example.pomodorowatch.ui.Screens
 
-import android.R.attr.contentDescription
-import android.widget.ImageButton
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,19 +14,20 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -37,26 +35,36 @@ import com.example.pomodorowatch.Data.LocalStorage.TreeSession
 import com.example.pomodorowatch.R
 //import com.example.pomodorowatch.ViewModel.TimerViewModel
 import com.example.pomodorowatch.ui.theme.PrimaryGreen
+import java.nio.file.WatchEvent
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 @Composable
 fun SessionDetailScreen(session: TreeSession, onBackClick: () -> Unit) {
-    val date = java.text.SimpleDateFormat("dd MMMM yyyy, hh:mm a", java.util.Locale.getDefault())
-        .format(java.util.Date(session.timeStamp))
+    val date = SimpleDateFormat("dd MMMM yyyy, hh:mm a", Locale.getDefault())
+        .format(Date(session.timeStamp))
     val treeRes =
-        if (session.isSuccessful) R.drawable.green_tree_details_screen else R.drawable.withered_tree
+        if (session.isSuccessful) R.drawable.green_tree_details_screen else R.drawable.withered_tree_details_screen
     val statusColor = if (session.isSuccessful) PrimaryGreen else Color.Red
-    val statusText = if (session.isSuccessful) "Completed Successfully" else "Given Up Early"
+    val statusText = if (session.isSuccessful) stringResource(
+        R.string.completed_successfully
+    ) else stringResource(
+        R.string.given_up_early
+    )
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFEDF6F4)) // لون الخلفية الهادي بتاع التطبيق
+            .background(MaterialTheme.colorScheme.background) // لون الخلفية الهادي بتاع التطبيق
             .padding(24.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         // زرار الرجوع (ممكن تحط Icon بداله)
         Row(
-            modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp),
             horizontalArrangement = Arrangement.Start,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -69,7 +77,9 @@ fun SessionDetailScreen(session: TreeSession, onBackClick: () -> Unit) {
                 )
             }
             Text(
-                text = " Back to Forest",
+                text = stringResource(
+                    R.string.back_to_forest
+                ),
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
                 color = PrimaryGreen,
@@ -78,18 +88,21 @@ fun SessionDetailScreen(session: TreeSession, onBackClick: () -> Unit) {
 //                    .clickable { onBackClick() }
             )
         }
-
+        Spacer(modifier = Modifier.height(16.dp))
         // دائرة جمالية ورا الشجرة الكبيرة
         Box(
             modifier = Modifier
                 .size(360.dp)
-                .background(Color.White.copy(alpha = 0.6f), shape = CircleShape),
+                .background(Color.White.copy(alpha = 0.6f), shape = RoundedCornerShape(24.dp)),
             contentAlignment = Alignment.Center
         ) {
             Image(
                 painter = painterResource(id = treeRes),
-                contentDescription = "Big Tree",
-                modifier = Modifier.size(500.dp).clip(RoundedCornerShape(20.dp))
+                contentDescription = "Big Tree", contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(500.dp)
+                    .clip(RoundedCornerShape(20.dp),
+                        )
             )
         }
 
@@ -99,7 +112,7 @@ fun SessionDetailScreen(session: TreeSession, onBackClick: () -> Unit) {
         Card(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(24.dp),
-            colors = CardDefaults.cardColors(containerColor = Color.White),
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
             elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
         ) {
             Column(
@@ -109,16 +122,30 @@ fun SessionDetailScreen(session: TreeSession, onBackClick: () -> Unit) {
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 Text(
-                    text = "Session Details",
+                    text = stringResource(
+                        R.string.session_details
+                    ),
                     fontSize = 20.sp,
                     fontWeight = FontWeight.ExtraBold,
                     color = PrimaryGreen
                 )
 
-                DetailRow(label = "Date & Time", value = date)
-                DetailRow(label = "Duration", value = "${session.durationInMinutes} Minutes")
-                DetailRow(label = "Stage Reached", value = "Stage ${session.treeString}")
+//                DetailRow(label =stringResource(R.string.date_and_time, value = date)
+//                DetailRow(label = "Duration", value = "${session.durationInMinutes} Minutes")
+//                DetailRow(label = "Stage Reached", value = "Stage ${session.treeString}")
 
+                DetailRow(
+                    label = stringResource(R.string.date_and_time),
+                    value = date
+                )
+                DetailRow(
+                    label = stringResource(R.string.duration),
+                    value = "${session.durationInMinutes} ${stringResource(R.string.minutes)}"
+                )
+                DetailRow(
+                    label = stringResource(R.string.stage_reached),
+                    value = "${stringResource(R.string.stage)} ${session.treeString}"
+                )
                 // سطر الحالة الملون
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -126,7 +153,7 @@ fun SessionDetailScreen(session: TreeSession, onBackClick: () -> Unit) {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "Status",
+                        text = stringResource(R.string.status),
                         fontSize = 16.sp,
                         color = Color.Gray,
                         fontWeight = FontWeight.Medium
@@ -152,6 +179,11 @@ fun DetailRow(label: String, value: String) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(text = label, fontSize = 16.sp, color = Color.Gray, fontWeight = FontWeight.Medium)
-        Text(text = value, fontSize = 16.sp, color = Color.DarkGray, fontWeight = FontWeight.Bold)
+        Text(
+            text = value,
+            fontSize = 16.sp,
+            color = MaterialTheme.colorScheme.onSurface,
+            fontWeight = FontWeight.Bold
+        )
     }
 }

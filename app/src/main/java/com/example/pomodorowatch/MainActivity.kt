@@ -1,43 +1,52 @@
 package com.example.pomodorowatch
 
 import TimerViewModel
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.CheckboxDefaults.colors
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarColors
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.pomodorowatch.Data.LocalStorage.TreeDatabase
 import com.example.pomodorowatch.Repositories.TreeSessionsRepo
 import com.example.pomodorowatch.ui.theme.PomodoroWatchTheme
-import com.example.pomodorowatch.ui.theme.Screens.Mainscreen
+import com.example.pomodorowatch.ui.Screens.Mainscreen
+import com.example.pomodorowatch.ui.theme.ThemeManager
 import kotlin.getValue
 
 class MainActivity : ComponentActivity() {
-    private val timerViewMiodel: TimerViewModel by viewModels()
+    private val timerViewModel: TimerViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        ThemeManager.init(this)
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            // بيشوف لو المستخدم لسه مداناش الصلاحية
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                // بيطلع رسالة (Popup) للمستخدم يطلب منه الموافقة على الإشعارات
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.POST_NOTIFICATIONS), 101)
+            }
+        }
         val database= TreeDatabase.getDatabase(this)
         val repos= TreeSessionsRepo(database.treeSessionDao())
         val factory= TimerViewModelFactory(repos)
 
         enableEdgeToEdge()
-        setContent {
+        setContent{
+        val isDarkTheme by ThemeManager.isDarkTheme.collectAsState()
 
-            PomodoroWatchTheme{
+            PomodoroWatchTheme(darkTheme =isDarkTheme ){
                 Surface(modifier = Modifier.fillMaxSize(),
                     color=MaterialTheme.colorScheme.background ) {
                     Mainscreen(viewModel = viewModel(factory=factory))

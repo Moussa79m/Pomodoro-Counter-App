@@ -1,17 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- النصوص الأساسية القديمة -->
     <string name="app_name">شجرتي</string>
-    <string name="Readytofocus">"جاهز للتركيز؟ "</string>
+    <string name="Readytofocus">جاهز للتركيز؟</string>
     <string name="Yourtreeiswaitingtogrow">شجرتك تنتظر النمو</string>
     <string name="GiveUp">إستسلام؟</string>
-    <string name="PlanetyourTreenow">"إزرع شجرتك الان "</string>
-    <string name="YourtreeisgrowingKeepgoing">"شجرتك تنمو,استمر يا بطل "</string>
+    <string name="PlanetyourTreenow">إزرع شجرتك الان</string>
+    <string name="YourtreeisgrowingKeepgoing">شجرتك تنمو, استمر يا بطل</string>
     <string name="MyForest">غابتى 🌳</string>
-    <string name="sessionscompletedkeepgoing">"15 جلسة مكتملة حتى الان , استمر "</string>
+    <string name="sessionscompletedkeepgoing">" جلسة مكتملة حتى الان , استمر"</string>
     <string name="TreesGrown">الأشجار المزروعة</string>
     <string name="WitheredTrees">الأشجار الذابلة</string>
     <string name="Focus">ركز</string>
     <string name="timer">المؤقت</string>
     <string name="yourTrees">أشجارك</string>
     <string name="myForest">غابتى</string>
+
+    <!-- نصوص شاشة تفاصيل الجلسة (Session Detail Screen) -->
+    <string name="back_to_forest">العودة للغابة</string>
+    <string name="completed_successfully">مكتملة بنجاح</string>
+    <string name="given_up_early">استسلام مبكر</string>
+    <string name="session_details">تفاصيل الجلسة</string>
+    <string name="date_and_time">التاريخ والوقت</string>
+    <string name="duration">المدة</string>
+    <string name="minutes">دقائق</string>
+    <string name="stage_reached">المرحلة التي تم الوصول إليها</string>
+    <string name="stage">مرحلة</string>
+    <string name="status">الحالة</string>
+
+    <!-- نصوص شاشة المؤقت والإشعارات (Timer Screen & Service) -->
+    <string name="pomotree">شجرتي 🌱</string>
+    <string name="choose_focus_duration">اختر مدة التركيز</string>
+    <string name="done">تم</string>
+    <string name="tap_to_edit">اضغط للتعديل</string>
+    <string name="pause">إيقاف مؤقت</string>
+    <string name="resume">إستئناف</string>
+    <string name="cancel">إلغاء</string>
+
+    <!-- نصوص الإشعارات (Service) -->
+    <string name="focus_time">وقت التركيز!</string>
+    <string name="session_completed">اكتملت الجلسة! 🌳</string>
+    <string name="great_job_tree">عمل رائع! لقد زرعت شجرة جديدة.</string>
+    <!-- نصوص الإشعارات الإضافية (Service) -->
+    <string name="notification_channel_name">خدمة المؤقت</string>
+    <string name="pomodoro_timer_title">مؤقت الشجرة</string>
+    <string name="time_left">الوقت المتبقي: %1$s</string>
+    <string name="Usefulminutes">دقائق تم استثمارها</string>
+
 </resources>

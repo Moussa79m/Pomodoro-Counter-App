@@ -1,11 +1,8 @@
-package com.example.pomodorowatch.ui.theme.Screens
+package com.example.pomodorowatch.ui.Screens
 
 import TimerViewModel
-import android.graphics.drawable.Icon
-import android.widget.ProgressBar
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -17,7 +14,6 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -29,30 +25,23 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.FloatingActionButtonDefaults.elevation
 import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.carousel.CarouselDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.pomodorowatch.Data.LocalStorage.TreeSession
 import com.example.pomodorowatch.R
 import com.example.pomodorowatch.ui.theme.ForestGreen
@@ -76,23 +65,29 @@ fun ForestScreen(viewmodel: TimerViewModel, onTreeClick: (TreeSession) -> Unit) 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFEDF6F4))
+            .background(MaterialTheme.colorScheme.background)
             .verticalScroll(rememberScrollState())
             .padding(24.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.height(48.dp))
+//        Row(
+//            modifier = Modifier.fillMaxWidth().height(30.dp),
+//            horizontalArrangement = Arrangement.End
+//        ) {
+//            ThemeToggleButton()
+//        }
+        Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = stringResource(com.example.pomodorowatch.R.string.MyForest),
+            text = stringResource(R.string.MyForest),
             fontSize = 28.sp,
             fontWeight = FontWeight.Bold,
             color = PrimaryGreen
         )
 
         Text(
-            text = "$successfulCount of ${successfulCount+witheredCount} " + stringResource(
-                com.example.pomodorowatch.R.string.sessionscompletedkeepgoing
+            text = "$successfulCount / ${successfulCount+witheredCount} " + stringResource(
+                R.string.sessionscompletedkeepgoing
             ),
             fontSize = 14.sp,
             color = Color.Gray,
@@ -107,22 +102,21 @@ fun ForestScreen(viewmodel: TimerViewModel, onTreeClick: (TreeSession) -> Unit) 
             StateCard(
                 modifier = Modifier.weight(1f),
                 icon = "🌳",
-                title = stringResource(com.example.pomodorowatch.R.string.TreesGrown),
+                title = stringResource(R.string.TreesGrown),
                 count = "$successfulCount", color = ForestGreen
             )
             StateCard(
                 modifier = Modifier.weight(1f),
                 icon = "🍂",
-                title = stringResource(com.example.pomodorowatch.R.string.WitheredTrees),
+                title = stringResource(R.string.WitheredTrees),
                 count = "$witheredCount", color = WitheredBrown
             )
         }
         Spacer(modifier = Modifier.height(24.dp))
         Card(modifier = Modifier
-            .background(Color.White)
             .fillMaxWidth()
             .height(90.dp),
-            colors = CardDefaults.cardColors(containerColor = Color.White),
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
             elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
             shape = RoundedCornerShape(16.dp)) {
             val safeTotalFocusMinutes = totalFocusMinutes ?: 0
@@ -134,10 +128,13 @@ fun ForestScreen(viewmodel: TimerViewModel, onTreeClick: (TreeSession) -> Unit) 
                 0f
             }
 
-            Column(modifier = Modifier.fillMaxSize().padding(12.dp)
+            Column(modifier = Modifier
+                .fillMaxSize()
+                .padding(12.dp)
                 , horizontalAlignment = Alignment.Start) {
                 Text(
-                    text = "$totalFocusMinutes / $totalMinutes Successful Minutes ",
+                    text = "$safeTotalFocusMinutes / $safeTotalMinutes "+ stringResource(
+                            R.string.Usefulminutes),
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     color = LightGreenCard
@@ -159,7 +156,7 @@ fun ForestScreen(viewmodel: TimerViewModel, onTreeClick: (TreeSession) -> Unit) 
         }
         Spacer(modifier = Modifier.height(24.dp))
         Text(
-            stringResource(com.example.pomodorowatch.R.string.yourTrees),
+            stringResource(R.string.yourTrees),
             fontWeight = FontWeight.Bold,
             color = PrimaryGreen,
             letterSpacing = 1.sp
@@ -167,7 +164,7 @@ fun ForestScreen(viewmodel: TimerViewModel, onTreeClick: (TreeSession) -> Unit) 
         Spacer(modifier = Modifier.height(16.dp))
 
         Card(
-            colors = CardDefaults.cardColors(containerColor = Color.White),
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
             shape = RoundedCornerShape(20.dp),
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -208,7 +205,7 @@ fun ForestScreen(viewmodel: TimerViewModel, onTreeClick: (TreeSession) -> Unit) 
 fun StateCard(modifier: Modifier, icon: String, title: String, count: String, color: Color) {
     Card(
         modifier.height(150.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
         shape = RoundedCornerShape(16.dp)
     ) {
@@ -280,11 +277,10 @@ fun TreeSessionCard(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .background(color = Color.White)
             .aspectRatio(1f)
             .padding(8.dp)
             .clickable { onClick() }, shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(contentColor = Color.White),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     )
     {
@@ -301,23 +297,28 @@ fun TreeSessionCard(
                     .size(550.dp)
                     .align(Alignment.Center),
             )
-            Text(
-                text = "${session.durationInMinutes}",
-                fontWeight = FontWeight.Bold,
-                fontSize = 24.sp,
-                color = PrimaryGreen,
-                modifier = Modifier.align(Alignment.BottomStart)
-            )
-            Box(
-                modifier = Modifier
-                    .size(16.dp)
-                    .background(
-                        color =
-                            if (session.isSuccessful) LightEmerald else Color.Red,
-                        shape = CircleShape
-                    )
-                    .align(Alignment.BottomEnd)
-            )
+            Row(modifier = Modifier.fillMaxWidth().align(Alignment.BottomCenter),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    text = "${session.durationInMinutes}",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 24.sp,
+                    color = PrimaryGreen,
+//                    modifier = Modifier.align(Alignment.BottomStart)
+                )
+                Box(
+                    modifier = Modifier
+                        .size(16.dp)
+                        .background(
+                            color =
+                                if (session.isSuccessful) LightEmerald else Color.Red,
+                            shape = CircleShape
+                        )
+//                        .align(Alignment.BottomEnd)
+                )
+            }
+
         }
     }
 

@@ -1,7 +1,4 @@
-
-
-package com.example.pomodorowatch.ui.theme.Screens
-
+package com.example.pomodorowatch.ui.Screens
 
 
 import TimerViewModel
@@ -42,7 +39,6 @@ import com.example.pomodorowatch.ui.theme.PrimaryGreen
 
 //with animation
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -50,6 +46,10 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
+import com.example.pomodorowatch.R
+
 // ... بقية الـ imports بتاعتك
 
 @Composable
@@ -60,26 +60,27 @@ fun Mainscreen(viewModel: TimerViewModel) {
     // حاوية الأنيميشن السحرية
     AnimatedContent(
         targetState = sessionToViewDetails,
+//        modifier = Modifier.fillMaxSize(), // 👈 السر الأول: تثبيت الحجم لمنع التقطيع
         transitionSpec = {
-            // لو رايحين لشاشة التفاصيل (المتغير مبقاش فاضي)
             if (targetState != null) {
-                slideInHorizontally(
-                    animationSpec = tween(400), // مدة الحركة 400 مللي ثانية
-                    initialOffsetX = { fullWidth -> fullWidth } // تدخل من اليمين
-                ) togetherWith slideOutHorizontally(
-                    animationSpec = tween(400),
-                    targetOffsetX = { fullWidth -> -fullWidth / 2 } // الشاشة القديمة تتحرك شوية للشمال (Parallax effect)
-                )
-            }
-            // لو راجعين لشاشة الغابة (المتغير رجع فاضي)
-            else {
-                slideInHorizontally(
-                    animationSpec = tween(400),
-                    initialOffsetX = { fullWidth -> -fullWidth / 3 } // الشاشة القديمة ترجع من الشمال
-                ) togetherWith slideOutHorizontally(
-                    animationSpec = tween(400),
-                    targetOffsetX = { fullWidth -> fullWidth } // شاشة التفاصيل تنسحب لليمين
-                )
+                // 👈 السر التاني: دمج حركة السحب مع ظهور واختفاء الشفافية (Fade)
+                (slideInHorizontally(
+                    animationSpec = tween(200),
+                    initialOffsetX = { fullWidth -> fullWidth }
+                ) + fadeIn(animationSpec = tween(200))) togetherWith (
+                        slideOutHorizontally(
+                            animationSpec = tween(200),
+                            targetOffsetX = { fullWidth -> -fullWidth / 2 }
+                        ) + fadeOut(animationSpec = tween(200)))
+            } else {
+                (slideInHorizontally(
+                    animationSpec = tween(200),
+                    initialOffsetX = { fullWidth -> -fullWidth  } // تم تعديلها لـ /2 عشان تبقى متناسقة مع الدخول
+                )  togetherWith (
+                        slideOutHorizontally(
+                            animationSpec = tween(200),
+                            targetOffsetX = { fullWidth -> fullWidth }
+                        ) ))
             }
         },
         label = "Screen Transition"
@@ -104,11 +105,11 @@ fun Mainscreen(viewModel: TimerViewModel) {
             Scaffold(
                 bottomBar = {
                     NavigationBar(
-                        containerColor = Color.White
+                        containerColor = MaterialTheme.colorScheme.surfaceBright
                     ) {
                         NavigationBarItem(
                             icon = { Text("⏱️") },
-                            label = { Text(stringResource(com.example.pomodorowatch.R.string.timer)) },
+                            label = { Text(stringResource(R.string.timer)) },
                             selected = selecctedTab == 0,
                             onClick = { selecctedTab = 0 },
                             colors = NavigationBarItemDefaults.colors(
@@ -119,7 +120,7 @@ fun Mainscreen(viewModel: TimerViewModel) {
                         )
                         NavigationBarItem(
                             icon = { Text("🌳") },
-                            label = { Text(stringResource(com.example.pomodorowatch.R.string.myForest)) },
+                            label = { Text(stringResource(R.string.myForest)) },
                             selected = selecctedTab == 1,
                             onClick = { selecctedTab = 1 },
                             colors = NavigationBarItemDefaults.colors(
@@ -131,11 +132,15 @@ fun Mainscreen(viewModel: TimerViewModel) {
                     }
                 }
             ) { paddingValues ->
-                Surface(modifier = Modifier.padding(paddingValues)) {
+                Surface(modifier = Modifier
+                    .padding(paddingValues)
+                    .fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background) {
 
                     // حاوية الأنيميشن الخاصة بالتابات السفلية
                     AnimatedContent(
                         targetState = selecctedTab,
+                        modifier = Modifier.fillMaxSize(),
                         transitionSpec = {
                             // لو رايحين من التايمر (0) للغابة (1) -> اسحب للشمال
                             if (targetState > initialState) {
