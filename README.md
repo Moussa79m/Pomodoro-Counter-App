@@ -5,7 +5,6 @@
 
 ---
 
-# 🇬🇧 English Version
 
 <p align="left">
   <img src="https://img.shields.io/badge/Kotlin-1.9.0-purple.svg?style=flat&logo=kotlin" alt="Kotlin">
@@ -15,41 +14,63 @@
 </p>
 
 ## 📖 About PomoTree
+**PomoTree** is an innovative, fully-featured productivity and time-management application built natively for Android. Based on the proven Pomodoro Technique, the app motivates users to maintain deep focus by planting virtual trees. Successfully complete a focus session, and a new tree flourishes in your personal "Forest". Give up early, and the tree withers. It's gamified productivity at its best.
 
-**PomoTree** is an innovative productivity and time-management app based on the Pomodoro Technique. The app motivates users to stay focused by planting virtual trees that grow with every successful focus session. Complete a session, and a new tree is added to your "Forest"; give up early, and the tree withers.
+## ✨ Comprehensive Features
+* ⏱️ **Custom iOS-Style Time Picker:** Features a highly interactive, custom-built `IOSTimePicker` for a smooth and premium time-selection experience.
+* 🌳 **Interactive Forest (My Forest):** A visually engaging dashboard tracking your productivity history, displaying successfully grown trees and failed attempts.
+* 📊 **In-Depth Session Analytics:** Clicking on any tree reveals detailed metrics (Date, exact Time, Duration, and final Status).
+* 🛡️ **Bulletproof Background Execution:** Utilizes Android's `Foreground Service` bound with custom Notifications to ensure the timer never drops, even when the app is killed or the device enters Doze mode.
+* 🌓 **Persistent Dynamic Theming:** Full system-independent Dark & Light mode toggle. Preferences are saved instantly via `SharedPreferences`, ensuring the app remembers your choice across sessions.
+* 🌍 **Seamless Localization:** Native support for both English (LTR) and Arabic (RTL), with automated layout mirroring and text translations.
+* 🚀 **Fluid Navigation & Animations:** Built with `Navigation Compose` integrating custom enter/exit slide and fade transitions for a premium, stutter-free UX.
 
-## ✨ Key Features
-
-* ⏱️ **Custom Pomodoro Timer:** Set your focus time in minutes with a fully interactive circular UI.
-* 🌳 **My Forest:** A dedicated screen to visually track your achievements and the trees you've grown.
-* 📊 **Session Details:** Detailed tracking for each session (Date, Time, Duration, and Tree Status).
-* 🔔 **Foreground Services:** The timer runs flawlessly in the background with interactive notifications to pause or cancel the session outside the app.
-* 🌗 **Dynamic Theme (Dark/Light Mode):** Full support for Dark Mode, saving user preferences locally using `SharedPreferences`.
-* 🌍 **Localization (RTL/LTR):** Fully supports English and Arabic, automatically adapting the layout direction.
-
-## 🛠️ Tech Stack & Tools
-
-Built with modern Android development standards:
-
-* **Language:** Kotlin
+## 🛠️ Complete Tech Stack
+This project represents modern Android development standards, utilizing the latest libraries and architectures:
+* **Core:** Kotlin, Android SDK
 * **UI Toolkit:** Jetpack Compose (Material Design 3)
-* **Architecture:** MVVM (Model-View-ViewModel) + Clean Architecture principles
-* **Local Database:** Room Database for secure local storage of sessions and trees.
-* **Asynchronous Programming:** Kotlin Coroutines & `StateFlow` / `MutableStateFlow` for state management.
-* **Background Processing:** `Foreground Service` combined with `NotificationCompat` to prevent Doze Mode interruptions.
-* **Navigation:** `Navigation Compose` with custom smooth transitions (Fade & Slide).
+* **Architecture:** MVVM (Model-View-ViewModel) paired with Clean Architecture principles (Separation of Data, Domain, and UI).
+* **Local Persistence:** 
+  * **Room Database:** For robust, structured storage of Tree Sessions and history.
+  * **SharedPreferences:** For lightweight, fast key-value storage (Theme Preferences).
+* **Concurrency & Reactive State:** Kotlin Coroutines, `StateFlow`, and `MutableStateFlow` for unidirectional data flow.
+* **Services:** `Foreground Service`, `NotificationCompat`, `PendingIntent`.
+* **Routing:** `Navigation Compose`.
 
-## 🏗️ Architecture & Project Structure
+## 🏗️ Exact Project Structure
+The codebase is modular, scalable, and meticulously organized:
 
 ```text
 com.example.pomodorowatch
-├── Data/            # Room DB, Entities, and DAOs
-├── Repositories/    # Data repositories (TreeSessionsRepo)
-├── ViewModel/       # State management and logic (TimerViewModel & Factory)
-├── Service/         # Background services & Notifications (TimerService)
-└── ui/              # Compose UI
-    ├── Screens/     # Main screens (Timer, Forest, Details)
-    └── theme/       # Colors, Typography, and ThemeManager
+├── Data/
+│   └── LocalStorage/
+│       ├── TreeDatabase.kt        # Room DB setup & configuration
+│       ├── TreeSessionDao.kt      # Data Access Object queries
+│       └── TreeSessionEntity.kt   # Database tables schema
+├── Model/                         # Domain models
+├── Repositories/
+│   └── TreeSessionsRepo.kt        # Single source of truth for data operations
+├── Service/
+│   ├── TimerManager.kt            # Global state manager for the active timer
+│   └── TimerService.kt            # Foreground service handling background ticks
+├── ui/
+│   ├── Screens/
+│   │   ├── DetailsScreen.kt       # Session detailed view
+│   │   ├── ForestScreen.kt        # User's trees grid/list view
+│   │   ├── IOSTimePicker.kt       # Custom-built UI component
+│   │   ├── MainScreen.kt          # BottomBar & Navigation host container
+│   │   ├── ThemeToggleButton.kt   # Reusable UI component
+│   │   └── TimerScreen.kt         # Active countdown UI
+│   └── theme/
+│       ├── Color.kt               # App color palettes
+│       ├── Theme.kt               # MaterialTheme wrapper
+│       ├── ThemeManager.kt        # SharedPreferences theme controller
+│       └── Type.kt                # Typography settings
+├── ViewModel/                     # ViewModels directory
+├── AppNavigation.kt               # Compose Navigation graph definitions
+├── AppScreens.kt                  # Sealed classes for route management
+├── MainActivity.kt                # Entry point & theme initialization
+└── TimerViewModelFactory.kt       # Dependency injection for ViewModel
 ```
 
 ## 🧪 Testing (Quality Assurance)
@@ -77,33 +98,77 @@ Developed by **Mahmoud**. Feel free to use, modify, and build upon it!
 
 ---
 
-# 🇪🇬 النسخة العربية
 
 ## 📖 عن التطبيق (About)
 
-PomoTree هو تطبيق مبتكر لإدارة الوقت وزيادة الإنتاجية يعتمد على تقنية "بومودورو". التطبيق يحفز المستخدمين على التركيز من خلال زراعة أشجار افتراضية تنمو مع كل جلسة تركيز ناجحة. إذا نجحت في إكمال الجلسة، ستتم إضافة شجرة جديدة إلى "غابتك"، وإذا استسلمت مبكراً، ستذبل الشجرة.
+PomoTree هو تطبيق احترافي ومتكامل لإدارة الوقت وزيادة الإنتاجية مبني بالكامل لمنصة أندرويد. يعتمد التطبيق على تقنية "بومودورو" ويضيف لمسة من التحفيز (Gamification)؛ حيث تقوم بزراعة أشجار افتراضية تنمو طوال فترة تركيزك. عند إكمال الجلسة بنجاح، تُضاف شجرة جديدة إلى "غابتك"، وإذا استسلمت، تذبل الشجرة.
+✨ المميزات الشاملة للتطبيق
+⏱️ منتقي وقت احترافي (iOS-Style): يحتوي على أداة IOSTimePicker مخصصة بالكامل لتجربة اختيار وقت سلسة ومميزة.
 
-## ✨ المميزات الرئيسية (Features)
+🌳 غابة الإنجازات التفاعلية: واجهة بصرية جذابة تعرض تاريخ إنتاجيتك، الأشجار الناجحة، وتلك التي لم تكتمل.
 
-* ⏱️ **مؤقت بومودورو مخصص:** إمكانية تحديد وقت التركيز بالدقائق مع واجهة مستخدم دائرية تفاعلية.
-* 🌳 **غابة الإنجازات (My Forest):** شاشة مخصصة تعرض سجل نجاحاتك والأشجار التي قمت بزراعتها بشكل مرئي جذاب.
-* 📊 **تفاصيل الجلسات:** تتبع دقيق لكل جلسة (التاريخ، الوقت، المدة، وحالة الشجرة).
-* 🔔 **العمل في الخلفية (Foreground Services):** استمرار عمل المؤقت بسلاسة في الخلفية مع إشعارات تفاعلية تتيح إيقاف أو إلغاء الجلسة من خارج التطبيق.
-* 🌗 **الوضع الداكن والفاتح (Dark/Light Mode):** دعم كامل للثيم الديناميكي مع حفظ تفضيلات المستخدم تلقائياً.
-* 🌍 **تعدد اللغات (Localization):** دعم كامل للغتين العربية والإنجليزية، مع تعديل اتجاه الشاشة (RTL/LTR) تلقائياً بسلاسة.
+📊 تحليلات دقيقة للجلسات: الضغط على أي شجرة يعرض تفاصيلها الدقيقة (التاريخ، الوقت، المدة، وحالة الإنجاز).
 
-## 🛠️ التقنيات والأدوات المستخدمة (Tech Stack)
+🛡️ عمليات خلفية لا تتوقف: استغلال قوي لـ Foreground Service مع إشعارات تفاعلية لضمان استمرار عمل المؤقت في الخلفية حتى لو تم إغلاق التطبيق أو دخل الهاتف في وضع توفير الطاقة.
 
-تم بناء هذا التطبيق باستخدام أحدث تقنيات تطوير تطبيقات أندرويد:
+🌓 إدارة ذكية للوضع الداكن: دعم كامل للوضع الداكن (Dark Mode) مع حفظ اختيار المستخدم محلياً باستخدام SharedPreferences لضمان تذكر التطبيق لإعداداتك.
 
-* **لغة البرمجة:** Kotlin
-* **واجهة المستخدم:** Jetpack Compose (Material Design 3)
-* **المعمارية (Architecture):** MVVM (Model-View-ViewModel)
-* **قاعدة البيانات:** Room Database للحفظ المحلي لمعلومات الأشجار والجلسات.
-* **البرمجة غير المتزامنة:** Kotlin Coroutines & Flow (StateFlow / MutableStateFlow).
-* **الخدمات (Services):** Foreground Service مقترنة بـ NotificationCompat لضمان عمل المؤقت عند غلق الشاشة.
-* **التنقل (Navigation):** استخدام Navigation Compose مع حركات انتقال مخصصة (Animations).
+🌍 دعم كامل للغات (RTL/LTR): التطبيق يدعم اللغتين العربية والإنجليزية بامتياز، مع انعكاس تلقائي لاتجاه الواجهات والحركات.
 
+🚀 تنقل وحركات سلسة (Animations): مبني باستخدام Navigation Compose مع حركات انتقال مخصصة (Slide & Fade) لتجربة استخدام خالية من التقطيع.
+
+🛠️ التقنيات (Tech Stack)
+تم بناء المشروع باستخدام أحدث المعايير والتقنيات في تطوير الأندرويد:
+
+الأساسيات: Kotlin, Android SDK
+
+واجهة المستخدم: Jetpack Compose (Material Design 3)
+
+المعمارية (Architecture): MVVM مع تطبيق مبادئ الـ Clean Architecture لفصل طبقات البيانات عن الواجهة.
+
+قواعد البيانات والحفظ المحلي:
+
+Room Database: لحفظ بيانات الجلسات والأشجار بشكل مهيكل وآمن.
+
+SharedPreferences: للحفظ السريع والخفيف لتفضيلات المستخدم (كإعدادات الثيم).
+
+إدارة الحالات والمهام المتزامنة: Kotlin Coroutines, StateFlow, MutableStateFlow.
+
+الخدمات (Services): Foreground Service, NotificationCompat, PendingIntent.
+المشروع (Folder Structure)
+تم تنظيم ملفات المشروع بدقة لتسهيل الصيانة والتطوير:
+
+Plaintext
+com.example.pomodorowatch
+├── Data/
+│   └── LocalStorage/
+│       ├── TreeDatabase.kt        # إعدادات قاعدة بيانات Room
+│       ├── TreeSessionDao.kt      # دوال التعامل مع البيانات
+│       └── TreeSessionEntity.kt   # هيكل جداول قاعدة البيانات
+├── Model/                         # نماذج البيانات الأساسية
+├── Repositories/
+│   └── TreeSessionsRepo.kt        # المستودع الوسيط للبيانات
+├── Service/
+│   ├── TimerManager.kt            # مدير حالة المؤقت العام
+│   └── TimerService.kt            # خدمة تشغيل المؤقت في الخلفية
+├── ui/
+│   ├── Screens/
+│   │   ├── DetailsScreen.kt       # شاشة تفاصيل الجلسة
+│   │   ├── ForestScreen.kt        # شاشة غابة الأشجار
+│   │   ├── IOSTimePicker.kt       # مكون اختيار الوقت المخصص
+│   │   ├── MainScreen.kt          # حاوية التطبيق والتنقل السفلي
+│   │   ├── ThemeToggleButton.kt   # زر تغيير الثيم
+│   │   └── TimerScreen.kt         # شاشة المؤقت
+│   └── theme/
+│       ├── Color.kt               # ألوان التطبيق
+│       ├── Theme.kt               # إعدادات الثيم الأساسية
+│       ├── ThemeManager.kt        # متحكم الـ SharedPreferences للثيم
+│       └── Type.kt                # إعدادات الخطوط
+├── ViewModel/                     # مجلد الـ ViewModels
+├── AppNavigation.kt               # مسارات التنقل بين الشاشات
+├── AppScreens.kt                  # تصنيفات الشاشات
+├── MainActivity.kt                # نقطة انطلاق التطبيق
+└── TimerViewModelFactory.kt       # مصنع حقن التبعيات للـ ViewModel
 ## 🧪 الاختبارات (Testing)
 
 التطبيق مصمم ليكون قابلاً للاختبار (Testable) بفضل فصل الـ Logic عن الـ UI عبر معمارية MVVM:
