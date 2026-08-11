@@ -7,10 +7,11 @@
 
 
 <p align="left">
-  <img src="https://img.shields.io/badge/Kotlin-1.9.0-purple.svg?style=flat&logo=kotlin" alt="Kotlin">
-  <img src="https://img.shields.io/badge/Jetpack%20Compose-UI-blue.svg?style=flat&logo=android" alt="Jetpack Compose">
-  <img src="https://img.shields.io/badge/Architecture-MVVM-green.svg?style=flat" alt="MVVM">
-  <img src="https://img.shields.io/badge/Database-Room-orange.svg?style=flat" alt="Room DB">
+<<img width="377" height="796" alt="Screenshot 2026-08-11 154356" src="https://github.com/user-attachments/assets/34fd8d55-8faf-4d4e-a4f3-bf16eca9c9f8" />
+<img width="381" height="802" alt="Screenshot 2026-08-11 154345" src="https://github.com/user-attachments/assets/169e2171-77eb-4fd5-9e6d-281787f5d246" />
+<img width="374" height="799" alt="Screenshot 2026-08-11 154333" src="https://github.com/user-attachments/assets/69b7cec3-bc19-4b36-af0f-8676ecf94f6d" />
+<img width="388" height="804" alt="Screenshot 2026-08-11 154324" src="https://github.com/user-attachments/assets/9eeddd61-c4cd-47d4-8661-ecadd940fe75" />
+
 </p>
 
 ## 📖 About PomoTree
@@ -99,7 +100,7 @@ Developed by **Mahmoud**. Feel free to use, modify, and build upon it!
 ---
 
 
-## 📖 عن التطبيق (About)
+## 📖 عن التطبيق (Pomotree)
 
 PomoTree هو تطبيق احترافي ومتكامل لإدارة الوقت وزيادة الإنتاجية مبني بالكامل لمنصة أندرويد. يعتمد التطبيق على تقنية "بومودورو" ويضيف لمسة من التحفيز (Gamification)؛ حيث تقوم بزراعة أشجار افتراضية تنمو طوال فترة تركيزك. عند إكمال الجلسة بنجاح، تُضاف شجرة جديدة إلى "غابتك"، وإذا استسلمت، تذبل الشجرة.
 ✨ المميزات الشاملة للتطبيق
@@ -126,49 +127,12 @@ PomoTree هو تطبيق احترافي ومتكامل لإدارة الوقت �
 
 المعمارية (Architecture): MVVM مع تطبيق مبادئ الـ Clean Architecture لفصل طبقات البيانات عن الواجهة.
 
-قواعد البيانات والحفظ المحلي:
-
-Room Database: لحفظ بيانات الجلسات والأشجار بشكل مهيكل وآمن.
-
-SharedPreferences: للحفظ السريع والخفيف لتفضيلات المستخدم (كإعدادات الثيم).
+قواعد البيانات والحفظ المحلي:Room Database: لحفظ بيانات الجلسات والأشجار بشكل مهيكل وآمن.
 
 إدارة الحالات والمهام المتزامنة: Kotlin Coroutines, StateFlow, MutableStateFlow.
 
 الخدمات (Services): Foreground Service, NotificationCompat, PendingIntent.
-المشروع (Folder Structure)
-تم تنظيم ملفات المشروع بدقة لتسهيل الصيانة والتطوير:
 
-Plaintext
-com.example.pomodorowatch
-├── Data/
-│   └── LocalStorage/
-│       ├── TreeDatabase.kt        # إعدادات قاعدة بيانات Room
-│       ├── TreeSessionDao.kt      # دوال التعامل مع البيانات
-│       └── TreeSessionEntity.kt   # هيكل جداول قاعدة البيانات
-├── Model/                         # نماذج البيانات الأساسية
-├── Repositories/
-│   └── TreeSessionsRepo.kt        # المستودع الوسيط للبيانات
-├── Service/
-│   ├── TimerManager.kt            # مدير حالة المؤقت العام
-│   └── TimerService.kt            # خدمة تشغيل المؤقت في الخلفية
-├── ui/
-│   ├── Screens/
-│   │   ├── DetailsScreen.kt       # شاشة تفاصيل الجلسة
-│   │   ├── ForestScreen.kt        # شاشة غابة الأشجار
-│   │   ├── IOSTimePicker.kt       # مكون اختيار الوقت المخصص
-│   │   ├── MainScreen.kt          # حاوية التطبيق والتنقل السفلي
-│   │   ├── ThemeToggleButton.kt   # زر تغيير الثيم
-│   │   └── TimerScreen.kt         # شاشة المؤقت
-│   └── theme/
-│       ├── Color.kt               # ألوان التطبيق
-│       ├── Theme.kt               # إعدادات الثيم الأساسية
-│       ├── ThemeManager.kt        # متحكم الـ SharedPreferences للثيم
-│       └── Type.kt                # إعدادات الخطوط
-├── ViewModel/                     # مجلد الـ ViewModels
-├── AppNavigation.kt               # مسارات التنقل بين الشاشات
-├── AppScreens.kt                  # تصنيفات الشاشات
-├── MainActivity.kt                # نقطة انطلاق التطبيق
-└── TimerViewModelFactory.kt       # مصنع حقن التبعيات للـ ViewModel
 ## 🧪 الاختبارات (Testing)
 
 التطبيق مصمم ليكون قابلاً للاختبار (Testable) بفضل فصل الـ Logic عن الـ UI عبر معمارية MVVM:
