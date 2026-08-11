@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- الأساسيات القديمة بتاعتك -->
+    <string name="app_name">PomoTree</string>
+    <string name="Readytofocus">Ready to focus?</string>
+    <string name="Yourtreeiswaitingtogrow">Your tree is waiting to grow</string>
+    <string name="GiveUp">Give Up</string>
+    <string name="PlanetyourTreenow">Plant your Tree now</string> <!-- عدلت Planet لـ Plant عشان المعنى يكون "إزرع" -->
+    <string name="YourtreeisgrowingKeepgoing">Your tree is growing, Keep going</string>
+    <string name="MyForest">My Forest 🌳</string>
+    <string name="sessionscompletedkeepgoing"> sessions completed, keep going!</string>
+    <string name="TreesGrown">Trees Grown</string>
+    <string name="WitheredTrees">Withered Trees</string>
+    <string name="Focus">Focus</string>
+    <string name="timer">Timer</string>
+    <string name="yourTrees">Your Trees</string>
+    <string name="myForest">"My Forest "</string>
+
+    <!-- نصوص شاشة تفاصيل الجلسة (Session Detail Screen) -->
+    <string name="back_to_forest">Back to Forest</string>
+    <string name="completed_successfully">Completed Successfully</string>
+    <string name="given_up_early">Given Up Early</string>
+    <string name="session_details">Session Details</string>
+    <string name="date_and_time">Date &amp; Time</string> <!-- استخدمنا &amp; عشان الـ XML يقرأ علامة الـ & صح -->
+    <string name="duration">Duration</string>
+    <string name="minutes">Minutes</string>
+    <string name="stage_reached">Stage Reached</string>
+    <string name="stage">Stage</string>
+    <string name="status">Status</string>
+
+    <!-- نصوص شاشة المؤقت (Timer Screen) -->
+    <string name="pomotree">PomoTree 🌱</string>
+    <string name="choose_focus_duration">Choose focus duration</string>
+    <string name="done">Done</string>
+    <string name="tap_to_edit">tap to edit</string>
+    <string name="pause">Pause</string>
+    <string name="resume">Resume</string>
+    <string name="cancel">Cancel</string>
+
+    <!-- نصوص الإشعارات (Service) -->
+    <string name="focus_time">Focus Time!</string>
+    <string name="session_completed">Session Completed! 🌳</string>
+    <string name="great_job_tree">Great job! You grew a new tree.</string>
+
+    <!-- نصوص الإشعارات الإضافية (Service) -->
+    <string name="notification_channel_name">Timer Service</string>
+    <string name="pomodoro_timer_title">Tree Timer</string>
+    <string name="time_left">Time left: %1$s</string>
+    <string name="Usefulminutes">Useful minutes</string>
+
+</resources>
